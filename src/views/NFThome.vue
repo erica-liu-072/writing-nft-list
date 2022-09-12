@@ -170,13 +170,7 @@ const url=Global.apiurl
         after:"",
         before:"",
         path:this.$route.path,
-        //預設一個註冊列表
-        creatorlist:[
-          {author: "章濤",iscn_owner:"like1085q77ah9kly5rd7uxjqcz38c40ecswr29l5aq"},
-          {author: "ckxpress",iscn_owner:"like13f4glvg80zvfrrs7utft5p68pct4mcq7t5atf6"},
-          {author: "許明恩",iscn_owner:"like128l3t64trehh8jnr8klqaj8c2sug6wlg4jxqf8"},
-          {author: "Pazu薯伯伯",iscn_owner:"like1fph6p38zvhhdgp7sm8zc258vk2p52ganzck5tr"}
-        ],
+        creatorlist:[],
         size:5,
         collector:""
       };
@@ -195,7 +189,7 @@ const url=Global.apiurl
     },
     methods: {
       async getcreator(){
-        //到後端抓新的註冊列表〔不在這個專案中這裡只有前端〕
+        //到後端抓新的註冊錢包列表〔不在這個專案中這裡只有前端〕
         axios({
           method: 'get',
           url:url + 'getcreator',
