@@ -20,8 +20,10 @@ npm run build
 npm run lint
 ```
 
+### Demo
+[Link](https://www.ericaworld.tw/writing-nft-list/).
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### Demo
-[Link](https://www.ericaworld.tw/writing-nft-list/).
+
