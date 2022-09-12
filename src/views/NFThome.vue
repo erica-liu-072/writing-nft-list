@@ -174,18 +174,8 @@ const url=Global.apiurl
         creatorlist:[
           {author: "章濤",iscn_owner:"like1085q77ah9kly5rd7uxjqcz38c40ecswr29l5aq"},
           {author: "ckxpress",iscn_owner:"like13f4glvg80zvfrrs7utft5p68pct4mcq7t5atf6"},
-          {author: "黃牛山人",iscn_owner:"like1axrhn76rhdp709ckwper5rt65w2kuvlh62ccj0"},
-          {author: "Chung Wah Chow",iscn_owner:"like1y95wh6qrxv8l6xftak272rvjxxyscqgrewal3v"},
           {author: "許明恩",iscn_owner:"like128l3t64trehh8jnr8klqaj8c2sug6wlg4jxqf8"},
-          {author: "Lusi",iscn_owner:"like1usqha7gsylljntz4phweyxq80g438e7vnpz92x"},
-          {author: "z1coach",iscn_owner:"like1d98l0vcxdkj3ct7p7x0ef5ynnj85sk50huvt4p"},
-          {author: "莎莉 Sally",iscn_owner:"like17qvxp9p5ejxvk5z0ru0epvxjkca98s5zx44tr6"},
-          {author: "Makzan 麥誠",iscn_owner:"like1jwjsnrypjhen3qs6jgg74pmf7d6a32kldmwk58"},
-          {author: "Pazu薯伯伯",iscn_owner:"like1fph6p38zvhhdgp7sm8zc258vk2p52ganzck5tr"},
-          {author: "aurorahuang",iscn_owner: "like1qv66yzpgg9f8w46zj7gkuk9wd2nrpqmca3huxf"},
-          {author: "碼農日常",iscn_owner: "like1apsjdsw9yggu5gt6mmcvlnma9793mp4qud4zak"},
-          {author: "denkeni",iscn_owner: "like1efjjhpxhmap9vuxd4857tu2a8kggyuce8drq7y"},
-          {author: "fongling",iscn_owner: "like1ulcpx4wp43xkap3rqzdmmszvp478dzh6t7f0v8"}
+          {author: "Pazu薯伯伯",iscn_owner:"like1fph6p38zvhhdgp7sm8zc258vk2p52ganzck5tr"}
         ],
         size:5,
         collector:""
