@@ -170,25 +170,18 @@ const url=Global.apiurl
         after:"",
         before:"",
         path:this.$route.path,
+        //預設一個註冊列表
         creatorlist:[
-          {author: "黃牛山人",iscn_owner:"like1sf2sc6t37xhd3m0dcaq6h5dz22mtru2um3jrvh"},
           {author: "章濤",iscn_owner:"like1085q77ah9kly5rd7uxjqcz38c40ecswr29l5aq"},
-          {author: "like1kcz2gaztc47zl3mcgplf9vkwl76wuzxrpssed0",iscn_owner:"like1kcz2gaztc47zl3mcgplf9vkwl76wuzxrpssed0"},
-          {author: "betaback",iscn_owner:"like13v8qtt0jz6y2304559v7l29sy7prz50jqwdewn"},
           {author: "ckxpress",iscn_owner:"like13f4glvg80zvfrrs7utft5p68pct4mcq7t5atf6"},
           {author: "黃牛山人",iscn_owner:"like1axrhn76rhdp709ckwper5rt65w2kuvlh62ccj0"},
           {author: "Chung Wah Chow",iscn_owner:"like1y95wh6qrxv8l6xftak272rvjxxyscqgrewal3v"},
           {author: "許明恩",iscn_owner:"like128l3t64trehh8jnr8klqaj8c2sug6wlg4jxqf8"},
           {author: "Lusi",iscn_owner:"like1usqha7gsylljntz4phweyxq80g438e7vnpz92x"},
-          {author: "like1zqf0jtzhfqftw5em5ecfv0drhqa0qs98vgphu8",iscn_owner:"like1zqf0jtzhfqftw5em5ecfv0drhqa0qs98vgphu8"},
           {author: "z1coach",iscn_owner:"like1d98l0vcxdkj3ct7p7x0ef5ynnj85sk50huvt4p"},
-          {author: "like1p6xz8ma7xmra64susvp8lxpqlx48skg9e86c9d",iscn_owner:"like1p6xz8ma7xmra64susvp8lxpqlx48skg9e86c9d"},
-          {author: "likecointest53274",iscn_owner:"like1cwlejjcx37l5e99sgl2eaz0x69hftcmkw77qkn"},
-          {author: "like1gujprvjudechzp3q87rnjcntdcxx0h5ta5lfnf",iscn_owner:"like1gujprvjudechzp3q87rnjcntdcxx0h5ta5lfnf"},
           {author: "莎莉 Sally",iscn_owner:"like17qvxp9p5ejxvk5z0ru0epvxjkca98s5zx44tr6"},
           {author: "Makzan 麥誠",iscn_owner:"like1jwjsnrypjhen3qs6jgg74pmf7d6a32kldmwk58"},
           {author: "Pazu薯伯伯",iscn_owner:"like1fph6p38zvhhdgp7sm8zc258vk2p52ganzck5tr"},
-          {author: "like1jwrscsrurz0v4w37yndxr0xrmd2pxeemcwu23f",iscn_owner:"like1jwrscsrurz0v4w37yndxr0xrmd2pxeemcwu23f"},
           {author: "aurorahuang",iscn_owner: "like1qv66yzpgg9f8w46zj7gkuk9wd2nrpqmca3huxf"},
           {author: "碼農日常",iscn_owner: "like1apsjdsw9yggu5gt6mmcvlnma9793mp4qud4zak"},
           {author: "denkeni",iscn_owner: "like1efjjhpxhmap9vuxd4857tu2a8kggyuce8drq7y"},
@@ -212,7 +205,7 @@ const url=Global.apiurl
     },
     methods: {
       async getcreator(){
-
+        //到後端抓新的註冊列表〔不在這個專案中這裡只有前端〕
         axios({
           method: 'get',
           url:url + 'getcreator',
