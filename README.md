@@ -20,6 +20,9 @@ npm run build
 npm run lint
 ```
 
+### CSS
+執行完 npm install 將 node_modules 資料夾中之 .css 檔案覆蓋至對應資料夾中。
+
 ### Demo
 [Link](https://www.ericaworld.tw/writing-nft-list/).
 
