@@ -278,7 +278,7 @@ const url=Global.apiurl
         for(var i=0;i<res.data.classes.length;i++){
             var res2 = await axios.get(`https://mainnet-node.like.co/iscn/records/id?iscn_id=${res.data.classes[i].parent.iscn_id_prefix}`);
             //console.log(res2.data)
-            var author=""
+            var author=res2.data.owner
             this.creatorlist.find((item) => {
               if(item.iscn_owner == res2.data.owner){
                 author=item.author
