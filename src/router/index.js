@@ -20,6 +20,11 @@ const routes = [
     path: rootpatch+"collector",
     name:'collector',
     component: loadView('views', 'Collector'),
+  },
+  {
+    path: rootpatch+"createanalyze",
+    name:'createanalyze',
+    component: loadView('views', 'CreateAnalyze'),
   }
 ];
 
