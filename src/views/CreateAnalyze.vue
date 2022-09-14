@@ -1,4 +1,3 @@
-
 <template>
   <b-overlay :show="show" rounded="sm">
   
@@ -152,9 +151,10 @@ const url=Global.apiurl
         pie: [
           { value: 100, name: ' ' }
         ],
-        pie2:[
-          { value: 100, name: ' ' }
-        ],
+        pie2:{
+          name:['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          value:[120, 200, 150, 80, 70, 110, 130]
+        },
         chartPie: null,
         chartPie2: null
       };
@@ -162,10 +162,9 @@ const url=Global.apiurl
     created() {
       
       this.updatenftlist();
-      //console.log(this.path)
     },
     methods: {
-      //由後端抓資料，有另外寫一個後端存註冊錢包資訊，不在這個專案裡
+        //由後端抓資料，有另外寫一個後端存註冊錢包資訊，不在這個專案裡
       async getcreator(){
         this.show = true
         setTimeout(() => {
@@ -187,13 +186,14 @@ const url=Global.apiurl
             this.total_nft=response.data.data.totalnft;
             this.totalpage=Math.ceil(response.data.data.creator.length / this.perPage);
             this.pie=response.data.data.pie;
-            this.pie2=response.data.data.pie2;
+            var pie2_d=response.data.data.pie2;
+            //this.pie2=response.data.data.pie2;
             this.pie.sort(function(a, b){
               var x = a['value'];
               var y = b['value'];
               return ((y<x)?-1:(y>x)?1:0);
             });
-            this.pie2.sort(function(a, b){
+            pie2_d.sort(function(a, b){
               var x = a['value'];
               var y = b['value'];
               return ((y<x)?-1:(y>x)?1:0);
@@ -202,6 +202,8 @@ const url=Global.apiurl
             var test_num2=0;
             var breakch1=0;
             var breakch2=0;
+            this.pie2.name=[];
+            this.pie2.value=[];
             for(var i=0;i<this.pie.length;i++){
               if(breakch1!=-1){
                 if(test_num ==0){
@@ -219,15 +221,19 @@ const url=Global.apiurl
               }
               if(breakch2!=-1){
                 if(test_num2 ==0){
-                  test_num2=test_num2+this.pie2[i]['value']
+                  test_num2=test_num2+pie2_d[i]['value']
+                  this.pie2.name.push(pie2_d[i]['name'])
+                  this.pie2.value.push(pie2_d[i]['value'])
                 }
                 else{
                   if(test_num2 / response.data.data.totalcollector >0.9){
-                    this.pie2.splice(i,this.pie2.length-1);
+                    pie2_d.splice(i,pie2_d.length-1);
                     breakch2=-1
                   }
                   else{
-                    test_num2=test_num2+this.pie2[i]['value']
+                    test_num2=test_num2+pie2_d[i]['value']
+                    this.pie2.name.push(pie2_d[i]['name'])
+                    this.pie2.value.push(pie2_d[i]['value'])
                   }
                 }
               }
@@ -238,9 +244,8 @@ const url=Global.apiurl
             this.pie.push(
               {name:'其他',value:response.data.data.totalnft-test_num}
             )
-           this.pie2.push(
-              {name:'其他',value:response.data.data.totalcollector-test_num2}
-            )
+            this.pie2.name.push('其他')
+            this.pie2.value.push(response.data.data.totalcollector-test_num2)
             this.getnft(1);
             this.show = false
           }
@@ -250,7 +255,7 @@ const url=Global.apiurl
 
       },
       updatenftlist(){
-        ////由後端更新nft列表，後端程式碼不在這個專案裡
+        //由後端更新nft列表，後端程式碼不在這個專案裡
         axios({
             method: 'post',
             url:url + 'updatenftlist',
@@ -381,41 +386,19 @@ const url=Global.apiurl
         }
         this.chartPie2 = echarts.init(document.getElementById('chartPie2'),'macarons');
         this.chartPie2.setOption({
-            tooltip: {
-              trigger: 'item'
-            },
-            legend: {
-              top: '5%',
-              left: 'center'
-            },
-            series: [
-              {
-                name: 'Access From',
-                type: 'pie',
-                radius: ['40%', '70%'],
-                avoidLabelOverlap: false,
-                itemStyle: {
-                  borderRadius: 10,
-                  borderColor: '#fff',
-                  borderWidth: 2
-                },
-                label: {
-                  show: false,
-                  position: 'center'
-                },
-                emphasis: {
-                  label: {
-                    show: true,
-                    fontSize: '40',
-                    fontWeight: 'bold'
-                  }
-                },
-                labelLine: {
-                  show: false
-                },
-                data:date
-              }
-            ]
+  xAxis: {
+    type: 'category',
+    data: date.name
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: date.value,
+      type: 'bar'
+    }
+  ]
         });
       },
       reset(){
