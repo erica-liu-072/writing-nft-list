@@ -47,9 +47,9 @@
               <tr>
                 <th scope="col" style="line-height: 2rem;width:2.5em;">#</th>
                 <th scope="col" style="width:5em;">封面</th>
-                <th scope="col" style="">標題<span class="margin_l_05"><a href="#" @click="tosort('name')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
-                <th scope="col" style="width:5em">作者<span class="margin_l_05"><a href="#" @click="tosort('author')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
-                <th scope="col" style="width:8em;">創建時間<span class="margin_l_05"><a href="#" @click="tosort('created_at')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
+                <th scope="col" style="">標題<span class="margin_l_05"><a href="javascript:void(0);" @click="tosort('name')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
+                <th scope="col" style="width:5em">作者<span class="margin_l_05"><a href="javascript:void(0);" @click="tosort('author')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
+                <th scope="col" style="width:8em;">創建時間<span class="margin_l_05"><a href="javascript:void(0);" @click="tosort('created_at')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
               </tr>
             </thead>
             <tbody>
@@ -170,22 +170,24 @@ const url=Global.apiurl
 
     },
     created() {
+
+        
       if(this.$route.params.add){
         this.search_text=this.$route.params.add;
         //console.log(this.$route.params.add);
       }
       this.getcreator();
       this.getnft(1);
+      
       //console.log(this.path)
     },
     methods: {
+      //由後端抓資料，有另外寫一個後端存註冊錢包資訊，不在這個專案裡
       async getcreator(){
-        //到後端抓新的註冊錢包列表〔不在這個專案中這裡只有前端〕
         axios({
           method: 'get',
           url:url + 'getcreator',
           headers:{
-            //'X-CSRF-TOKEN': '',
             'Access-Control-Allow-Origin': '*',
             'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/json',
@@ -195,12 +197,34 @@ const url=Global.apiurl
           //console.log(response.data)
           if(response.data.success){
             this.creatorlist=response.data.data.creator;
+            this.updatenftlist();
           }
           //this.creatorlist=response.data.data
           
         }).catch(function(error) {
           console.log(error)
         });
+      },
+      updatenftlist(){
+        axios({
+            method: 'post',
+            url:url + 'updatenftlist',
+            headers:{
+              //'X-CSRF-TOKEN': '',
+              'Access-Control-Allow-Origin': '*',
+              'X-Requested-With': 'XMLHttpRequest',
+              'Content-Type': 'application/json',
+            },
+            data:{}
+          }).then((response)=>{
+            
+            if(response.data.success){
+              //console.log(response.data)
+            }
+            
+          }).catch(function(error) {
+            console.log(error)
+          });
       },
       search(){
         this.getnft(1);
@@ -256,7 +280,7 @@ const url=Global.apiurl
         var rule="";
         //var rule_num=1;
         if(this.search_text != "" || this.collector != ""){
-          this.after=this.moment('2022-07-22','yyyy-mm-dd').unix();
+          this.after=this.moment('2022-07-22','yyyy-MM-dd').unix();
         }
         if(this.after !=""){
           rule=rule+'after='+this.moment(this.after).unix();
