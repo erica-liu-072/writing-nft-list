@@ -14,28 +14,14 @@
             <router-link :to="{ name: 'collector'}" >
               <b-nav-item>收藏列表</b-nav-item>
             </router-link>
+            <router-link :to="{ name: 'createanalyze'}" >
+              <b-nav-item>INFO</b-nav-item>
+            </router-link>
           </b-navbar-nav>
 
 
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
-            <!--
-            <b-nav-form>
-              <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-              <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-            </b-nav-form>
-            -->
-            <!--
-            <router-link :to="{ name: 'create'}" >
-              <b-nav-item>Create/Update ISCN</b-nav-item>
-            </router-link>
-            <router-link :to="{ name: 'batch-create'}" >
-              <b-nav-item>Batch Create/Update</b-nav-item>
-            </router-link>
-            <router-link :to="{ name: 'find'}" >
-              <b-nav-item>Find ISCN By ID</b-nav-item>
-            </router-link>
-            -->
             <div class="dropdown nav_d_item">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                 敬請期待
@@ -45,26 +31,6 @@
                 <li><button class="dropdown-item" type="button">敬請期待</button></li>
               </ul>
             </div>
-            <!--
-            <b-nav-item-dropdown class="navbar_name" text="敬請期待"  right>
-              <div class="blockdiv">
-                <b-dropdown-item class="blockdiv" href="#" >敬請期待</b-dropdown-item>
-                <b-dropdown-item class="blockdiv" href="#" >敬請期待</b-dropdown-item>
-              </div>
-              <b-dropdown-item href="#">RU</b-dropdown-item>
-              <b-dropdown-item href="#">FA</b-dropdown-item>
-              
-            </b-nav-item-dropdown>
-            -->
-            <!--
-            <b-nav-item-dropdown right>
-              <template #button-content>
-                <em>---User----</em>
-              </template>
-              <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-            </b-nav-item-dropdown>
-            -->
             <b-button class="margin_l_05" v-if="$store.state.wallet" >{{this.$store.state.wallet.address.slice(0, 12)+"…"}} </b-button>
             <b-button class="margin_l_05" v-else @click="connect_wallet">連結Keplr錢包</b-button>
           </b-navbar-nav>
@@ -72,7 +38,7 @@
       </b-navbar>
     </div>
     <div class="mainset">
-      <router-view class="router-view" />
+      <router-view v-if="isRouterAliev" class="router-view" />
     </div>
   </div>
 
@@ -81,15 +47,27 @@
 import Global from "@/components/Global.vue";
 
  export default {
+    provide(){
+      return { 
+        reload:this.reload
+      }
+    },
     data() {
       return { 
         rootpatch:Global.rootpatch,
+        isRouterAliev:true
       }
     },
     created() {
       //
     },
     methods: {
+      reload(){
+        this.isRouterAliev=false
+        this.$nextTick(() => {
+          this.isRouterAliev=true
+        })
+      },
       connect_wallet(){
         this.$store.dispatch('connect_wallet')
       },
@@ -136,16 +114,9 @@ import Global from "@/components/Global.vue";
   body {
     margin: 0;
   }
-  //.flex-grow {
-  //  flex-grow: 1;
-  //}
   .margin_l_05{
     margin-left:0.5rem;
   }
-  //.blockdiv{
-  //  display: block;
-  //  width: 100%;
-  //}
   .nav_d_item{
      display: block;
   }
