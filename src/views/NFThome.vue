@@ -49,15 +49,7 @@
                 <th scope="col" style="width:5em;">封面</th>
                 <th scope="col" style="">標題<span class="margin_l_05"><a href="#" @click="tosort('name')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
                 <th scope="col" style="width:5em">作者<span class="margin_l_05"><a href="#" @click="tosort('author')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
-                <!--<th scope="col" style="width:4em">--</th>-->
                 <th scope="col" style="width:8em;">創建時間<span class="margin_l_05"><a href="#" @click="tosort('created_at')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
-                <!--
-                <th scope="col" style="">頁面標題<br><a href="#" @click="setsort('pagetitle')"><i class="fas fa-sort"></i></a></th>
-                <th scope="col" style="width:6.5rem;">置頂<br><a href="#" @click="setsort('topup')"><i class="fas fa-sort"></i></a></th>
-                <th scope="col" style="2rem;vertical_middle;width:6rem">頁面連結<br>&nbsp</th>
-                <th scope="col" style="width:7rem;">建立日期<br><a href="#" @click="setsort('created_at')"><i class="fas fa-sort"></i></a></th>
-                <th scope="col" style="width:7rem;">操作<br>&nbsp</th>
-                -->
               </tr>
             </thead>
             <tbody>
@@ -66,7 +58,6 @@
                   <td scope="row"><b-img rounded :src="plist.coverimg" :alt="plist.name" style="max-width:5em" @error="imgError(index)"></b-img></td>
                   <td scope="row"><a :href="link_burl+plist.id" target="_blank">{{plist.name}}</a></td>
                   <td scope="row"><a href="#" @click="searchowner(plist.iscn_owner)">{{plist.author}}</a></td>
-                  <!--<td scope="row">--</td>-->
                   <td scope="row">{{$filter.moment(plist.created_at,"YYYY-MM-DD HH:mm:ss")}}</td>
               </tr>
             </tbody>
