@@ -16,6 +16,7 @@
               :options="creatorlist" 
               :reduce="(option) => option.iscn_owner"
               label="author"
+              @change="selectchang"
             ></v-select>
           </div>
         </div>
@@ -39,7 +40,7 @@
         </div>
       </div>
       
-        <div class="margin_b_05 margin_t_10">
+        <div class="margin_b_05 margin_t_10 widthmin922">
           <div class="margin_b_05"> 
           <h4 class="searchdiv"> Writing NFT 列表 〔預設列出近 7 天創建的 NFT〕</h4>
           <table class="table table-bordered table-striped">
@@ -49,6 +50,8 @@
                 <th scope="col" style="width:5em;">封面</th>
                 <th scope="col" style="">標題<span class="margin_l_05"><a href="javascript:void(0);" @click="tosort('name')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
                 <th scope="col" style="width:5em">作者<span class="margin_l_05"><a href="javascript:void(0);" @click="tosort('author')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
+                <th scope="col" style="width:7em">目前價格<span class="margin_l_05"><a href="javascript:void(0);" @click="tosort('price')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
+                <th scope="col" style="width:5em">售出<span class="margin_l_05"><a href="javascript:void(0);" @click="tosort('soldcount')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
                 <th scope="col" style="width:8em;">創建時間<span class="margin_l_05"><a href="javascript:void(0);" @click="tosort('created_at')"><font-awesome-icon icon="fa-solid fa-sort" /></a></span></th>
               </tr>
             </thead>
@@ -58,6 +61,8 @@
                   <td scope="row"><b-img rounded :src="plist.coverimg" :alt="plist.name" style="max-width:5em" @error="imgError(index)"></b-img></td>
                   <td scope="row"><a :href="link_burl+plist.id" target="_blank">{{plist.name}}</a></td>
                   <td scope="row"><a href="#" @click="searchowner(plist.iscn_owner)">{{plist.author}}</a></td>
+                  <td scope="row">{{plist.price}} Like</td>
+                  <td scope="row">{{plist.soldcount}}</td>
                   <td scope="row">{{$filter.moment(plist.created_at,"YYYY-MM-DD HH:mm:ss")}}</td>
               </tr>
             </tbody>
@@ -66,60 +71,60 @@
           <!--分頁-->
           <div class="margin_b_05">
             <div v-if="(page== 1 || page== 2) && totalpage >=5" class="textalign_c">
-              <b-button v-if="page > 1" @click="getlist(1)" variant="outline-primary" class="margin_r_05"> {{frist}} </b-button>
-              <b-button v-if="page > 1" @click="getlist(page-1)" variant="outline-primary" class="margin_r_05"> {{prev}} </b-button>
+              <b-button v-if="page > 1" @click="getlist(1)" squared variant="outline-primary" class="margin_r_01"> {{frist}} </b-button>
+              <b-button v-if="page > 1" @click="getlist(page-1)" squared variant="outline-primary" class="margin_r_01"> {{prev}} </b-button>
               <span v-for="n in 5" :key="n">
-                <b-button v-if="n != page" @click="getlist(n)" variant="outline-primary" class="margin_r_05">{{n}}</b-button>
-                <b-button v-else variant="dark" class="margin_r_05">{{n}}</b-button>
+                <b-button v-if="n != page" @click="getlist(n)" squared variant="outline-primary" class="margin_r_01">{{n}}</b-button>
+                <b-button v-else variant="dark" squared class="margin_r_01">{{n}}</b-button>
               </span>
-              <b-button v-if="page < totalpage " @click="getlist(page+1)" variant="outline-primary" class="margin_r_05"> {{next}} </b-button>
-              <b-button v-if="page < totalpage " @click="getlist(totalpage)" variant="outline-primary" class="margin_r_05"> {{last}} </b-button>
+              <b-button v-if="page < totalpage " @click="getlist(page+1)" squared variant="outline-primary" class="margin_r_01"> {{next}} </b-button>
+              <b-button v-if="page < totalpage " @click="getlist(totalpage)" squared variant="outline-primary" class="margin_r_01"> {{last}} </b-button>
             </div>
             <div v-else-if="page - 2 >=1  && page+2 <=totalpage " class="textalign_c">
-                <b-button v-if="page > 1" @click="getlist(1)" variant="outline-primary" class="margin_r_05"> {{frist}} </b-button>
-                <b-button v-if="page > 1" @click="getlist(page-1)" variant="outline-primary" class="margin_r_05"> {{prev}} </b-button>
+                <b-button v-if="page > 1" @click="getlist(1)" squared variant="outline-primary" class="margin_r_01"> {{frist}} </b-button>
+                <b-button v-if="page > 1" @click="getlist(page-1)" squared variant="outline-primary" class="margin_r_01"> {{prev}} </b-button>
                 <span v-for="n in 5" :key="n">
-                    <b-button v-if="n==1" @click="getlist(page-2)" variant="outline-primary" class="margin_r_05">{{page-2}}</b-button>
-                    <b-button v-else-if="n==2" @click="getlist(page-1)" variant="outline-primary" class="margin_r_05">{{page-1}}</b-button>
-                    <b-button v-else-if="n==3" variant="dark" class="margin_r_05">{{page}}</b-button>
-                    <b-button v-else-if="n==4" @click="getlist(page+1)" variant="outline-primary" class="margin_r_05">{{page+1}}</b-button>
-                    <b-button v-else-if="n==5" @click="getlist(page+2)" variant="outline-primary" class="margin_r_05">{{page+2}}</b-button>              
+                    <b-button v-if="n==1" @click="getlist(page-2)" squared variant="outline-primary" class="margin_r_01">{{page-2}}</b-button>
+                    <b-button v-else-if="n==2" @click="getlist(page-1)" squared variant="outline-primary" class="margin_r_01">{{page-1}}</b-button>
+                    <b-button v-else-if="n==3" squared variant="dark" class="margin_r_01">{{page}}</b-button>
+                    <b-button v-else-if="n==4" @click="getlist(page+1)" squared variant="outline-primary" class="margin_r_01">{{page+1}}</b-button>
+                    <b-button v-else-if="n==5" @click="getlist(page+2)" squared variant="outline-primary" class="margin_r_01">{{page+2}}</b-button>              
                 </span>
-                <b-button v-if="page < totalpage " @click="getlist(page+1)" variant="outline-primary" class="margin_r_05"> {{next}} </b-button>
-                <b-button v-if="page < totalpage " @click="getlist(totalpage)" variant="outline-primary" class="margin_r_05"> {{last}} </b-button>
+                <b-button v-if="page < totalpage " @click="getlist(page+1)" squared variant="outline-primary" class="margin_r_01"> {{next}} </b-button>
+                <b-button v-if="page < totalpage " @click="getlist(totalpage)" squared variant="outline-primary" class="margin_r_01"> {{last}} </b-button>
             </div>
             <div v-else-if="totalpage - 1 == page && totalpage >= 5" class="textalign_c">
-                <b-button v-if="page > 1" @click="getlist(1)" variant="outline-primary" class="margin_r_05"> {{frist}} </b-button>
-                <b-button v-if="page > 1" @click="getlist(page-1)" variant="outline-primary" class="margin_r_05"> {{prev}} </b-button>
+                <b-button v-if="page > 1" @click="getlist(1)" squared variant="outline-primary" class="margin_r_01"> {{frist}} </b-button>
+                <b-button v-if="page > 1" @click="getlist(page-1)" squared variant="outline-primary" class="margin_r_01"> {{prev}} </b-button>
                 <span v-for="n in 5" :key="n">
-                    <b-button v-if="n==1" @click="getlist(page-3)" variant="outline-primary" class="margin_r_05">{{page-3}}</b-button>
-                    <b-button v-else-if="n==2" @click="getlist(page-2)" variant="outline-primary" class="margin_r_05">{{page-2}}</b-button>
-                    <b-button v-else-if="n==3" @click="getlist(page-1)" variant="outline-primary" class="margin_r_05">{{page-1}}</b-button>
-                    <b-button v-else-if="n==4" variant="dark" class="margin_r_05">{{page}}</b-button>
-                    <b-button v-else-if="n==5" @click="getlist(page+1)" variant="outline-primary" class="margin_r_05">{{page+1}}</b-button> 
+                    <b-button v-if="n==1" @click="getlist(page-3)" squared variant="outline-primary" class="margin_r_01">{{page-3}}</b-button>
+                    <b-button v-else-if="n==2" @click="getlist(page-2)" squared variant="outline-primary" class="margin_r_01">{{page-2}}</b-button>
+                    <b-button v-else-if="n==3" @click="getlist(page-1)" squared variant="outline-primary" class="margin_r_01">{{page-1}}</b-button>
+                    <b-button v-else-if="n==4" squared variant="dark" class="margin_r_01">{{page}}</b-button>
+                    <b-button v-else-if="n==5" @click="getlist(page+1)" squared variant="outline-primary" class="margin_r_01">{{page+1}}</b-button> 
                 </span>
-                <b-button v-if="page < totalpage " @click="getlist(page+1)" variant="outline-primary" class="margin_r_05"> {{next}} </b-button>
-                <b-button v-if="page < totalpage " @click="getlist(totalpage)" variant="outline-primary" class="margin_r_05"> {{last}} </b-button>
+                <b-button v-if="page < totalpage " @click="getlist(page+1)" squared variant="outline-primary" class="margin_r_01"> {{next}} </b-button>
+                <b-button v-if="page < totalpage " @click="getlist(totalpage)" squared variant="outline-primary" class="margin_r_01"> {{last}} </b-button>
             </div>
             <div v-else-if="totalpage == page && totalpage >= 5" class="textalign_c">
-                <b-button v-if="page > 1" @click="getlist(1)" variant="outline-primary" class="margin_r_05"> {{frist}} </b-button>
-                <b-button v-if="page > 1" @click="getlist(page-1)" variant="outline-primary" class="margin_r_05"> {{prev}} </b-button>
+                <b-button v-if="page > 1" @click="getlist(1)" squared variant="outline-primary" class="margin_r_01"> {{frist}} </b-button>
+                <b-button v-if="page > 1" @click="getlist(page-1)" squared variant="outline-primary" class="margin_r_01"> {{prev}} </b-button>
                 <span v-for="n in 5" :key="n">
-                    <b-button v-if="n!=5" @click="getlist(totalpage-(5-n))" variant="outline-primary" class="margin_r_05">{{totalpage-(5-n)}}</b-button>
-                    <b-button v-else variant="dark" class="margin_r_05">{{totalpage}}</b-button> 
+                    <b-button v-if="n!=5" @click="getlist(totalpage-(5-n))" squared variant="outline-primary" class="margin_r_01">{{totalpage-(5-n)}}</b-button>
+                    <b-button v-else squared variant="dark" class="margin_r_01">{{totalpage}}</b-button> 
                 </span>
-                <b-button v-if="page < totalpage " @click="getlist(page+1)" variant="outline-primary" class="margin_r_05"> {{next}} </b-button>
-                <b-button v-if="page < totalpage " @click="getlist(totalpage)" variant="outline-primary" class="margin_r_05"> {{last}} </b-button>
+                <b-button v-if="page < totalpage " @click="getlist(page+1)" squared variant="outline-primary" class="margin_r_01"> {{next}} </b-button>
+                <b-button v-if="page < totalpage " @click="getlist(totalpage)" squared variant="outline-primary" class="margin_r_01"> {{last}} </b-button>
             </div>
             <div v-else-if="totalpage < 5" class="textalign_c">
-                <b-button v-if="page > 1" @click="getlist(1)" variant="outline-primary" class="margin_r_05"> {{frist}} </b-button>
-                <b-button v-if="page > 1" @click="getlist(page-1)" variant="outline-primary" class="margin_r_05"> {{prev}} </b-button>
+                <b-button v-if="page > 1" @click="getlist(1)" squared variant="outline-primary" class="margin_r_01"> {{frist}} </b-button>
+                <b-button v-if="page > 1" @click="getlist(page-1)" squared variant="outline-primary" class="margin_r_01"> {{prev}} </b-button>
                 <span v-for="n in totalpage" :key="n">
-                        <b-button v-if="n != page" @click="getlist(n)" variant="outline-primary" class="margin_r_05">{{n}}</b-button>
-                        <b-button v-else variant="dark" class="margin_r_05">{{n}}</b-button>
+                        <b-button v-if="n != page" @click="getlist(n)" squared variant="outline-primary" class="margin_r_01">{{n}}</b-button>
+                        <b-button v-else squared variant="dark" class="margin_r_01">{{n}}</b-button>
                 </span>
-                <b-button v-if="page < totalpage " @click="getlist(page+1)" variant="outline-primary" class="margin_r_05"> {{next}} </b-button>
-                <b-button v-if="page < totalpage " @click="getlist(totalpage)" variant="outline-primary" class="margin_r_05"> {{last}} </b-button>
+                <b-button v-if="page < totalpage " @click="getlist(page+1)" squared variant="outline-primary" class="margin_r_01"> {{next}} </b-button>
+                <b-button v-if="page < totalpage " @click="getlist(totalpage)" squared variant="outline-primary" class="margin_r_01"> {{last}} </b-button>
             </div>
           </div>
           <!--分頁 end-->
@@ -170,20 +175,17 @@ const url=Global.apiurl
 
     },
     created() {
-
-        
       if(this.$route.params.add){
         this.search_text=this.$route.params.add;
-        //console.log(this.$route.params.add);
       }
       this.getcreator();
-      this.getnft(1);
-      
-      //console.log(this.path)
     },
     methods: {
-      //由後端抓資料，有另外寫一個後端存註冊錢包資訊，不在這個專案裡
       async getcreator(){
+        this.show = true
+        setTimeout(() => {
+          this.show = false
+        }, 50000);
         axios({
           method: 'get',
           url:url + 'getcreator',
@@ -194,34 +196,36 @@ const url=Global.apiurl
           },
           data:{}
         }).then((response)=>{
-          //console.log(response.data)
           if(response.data.success){
             this.creatorlist=response.data.data.creator;
+            this.show = false
             this.updatenftlist();
           }
-          //this.creatorlist=response.data.data
           
         }).catch(function(error) {
           console.log(error)
         });
       },
       updatenftlist(){
+        this.show = true
+        setTimeout(() => {
+          this.show = false
+        }, 50000);
         axios({
             method: 'post',
             url:url + 'updatenftlist',
             headers:{
-              //'X-CSRF-TOKEN': '',
               'Access-Control-Allow-Origin': '*',
               'X-Requested-With': 'XMLHttpRequest',
               'Content-Type': 'application/json',
             },
             data:{}
           }).then((response)=>{
-            
+            this.show = false
             if(response.data.success){
-              //console.log(response.data)
+             this.getnft(1);
             }
-            
+
           }).catch(function(error) {
             console.log(error)
           });
@@ -270,15 +274,14 @@ const url=Global.apiurl
         }
         this.getlist(1);
       },
-      async getnft(page,search_text){
+      async getnft(page){
+        if(this.search_text==null){
+          this.search_text=""
+        }
         var time = new Date().getTime();
-        //time=this.moment(time).valueOf();
-        
-        //console.log(this.moment(time).add(-30,'days').unix());
         this.list=[];
         this.alllist=[];
         var rule="";
-        //var rule_num=1;
         if(this.search_text != "" || this.collector != ""){
           this.after=this.moment('2022-07-22','yyyy-MM-dd').unix();
         }
@@ -290,11 +293,9 @@ const url=Global.apiurl
         }
         if(this.before !=""){
           rule=rule+'&before='+this.moment(this.before).add(1,'days').unix();
-          //rule_num++;
         }
-        if(search_text != ""){
+        if(this.search_text != ""){
           rule=rule+'&creator='+this.search_text;
-          //rule_num++;
         }
         if(this.collector!=""){
           rule=rule+'&collector='+this.collector;
@@ -304,15 +305,12 @@ const url=Global.apiurl
             this.limit=100;
           }
           rule=rule+'&limit='+this.limit;
-          //rule_num++;
         }
-        //console.log(rule)
         this.show=true;
         setTimeout(() => {
           this.show = false
         }, 50000);
         var res = await axios.get(`https://mainnet-node.like.co/likechain/likenft/v1/ranking?${rule}`);
-        //console.log(res.data)
         if(! res.data.classes){
               this.$message({
                 message: `沒有回傳資料。`,
@@ -323,43 +321,42 @@ const url=Global.apiurl
               this.totalpage=0;
               return;
         }
-        this.totalpage=Math.ceil(res.data.classes.length / this.perPage);
+        
         
         for(var i=0;i<res.data.classes.length;i++){
-            var res2 = await axios.get(`https://mainnet-node.like.co/iscn/records/id?iscn_id=${res.data.classes[i].parent.iscn_id_prefix}`);
-            //console.log(res2.data)
-            var author=res2.data.owner
-            this.creatorlist.find((item) => {
-              if(item.iscn_owner == res2.data.owner){
-                author=item.author
+          let exist=false;
+          try {
+            var res2= await axios.get(`https://api.like.co/likernft/purchase?class_id=${res.data.classes[i].id}`);
+            exist=true;
+          } catch (e) {
+            exist=false;
+          }
+          if(exist){
+              var author=res2.data.metadata.creatorWallet
+              this.creatorlist.find((item) => {
+                if(item.iscn_owner == res2.data.metadata.creatorWallet){
+                  author=item.author
+                }
+              }) 
+              if(author.length > 12){
+                author=author.slice(0, 12)+"..."
               }
-            }) 
-            if(author.length > 12){
-              author=author.slice(0, 12)+"..."
-            }
-            this.alllist.push({
-              id:res.data.classes[i].id,
-              name:res.data.classes[i].name,
-              coverimg:this.coverimg_burl+res.data.classes[i].id+".png",
-              url:res.data.classes[i].uri,
-              created_at:res.data.classes[i].created_at,
-              uri:res.data.classes[i].uri,
-              iscn_owner:res2.data.owner,
-              stakeholders:res2.data.records[0].data.stakeholders.length,
-              author:author
-            });
-            /*
-            try {
-              var res3 = await axios.get(`https://api.like.co/users/addr/${res2.data.owner}/min`);
-            } catch (e) {
-              this.alllist[this.alllist.length-1].author=res2.data.owner.slice(0, 12)+"…";
-            }
-            if(this.alllist[this.alllist.length-1].author== true){
-              var res4 = await axios.get(`https://api.like.co/users/addr/${res2.data.owner}/min`);
-              this.alllist[this.alllist.length-1].author=res4.data.displayName;
-            }
-            */
+              this.alllist.push({
+                id:res.data.classes[i].id,
+                name:res.data.classes[i].name,
+                coverimg:this.coverimg_burl+res.data.classes[i].id+".png",
+                url:res.data.classes[i].uri,
+                created_at:res.data.classes[i].created_at,
+                uri:res.data.classes[i].uri,
+                iscn_owner:res2.data.metadata.creatorWallet,
+                author:author,
+                soldcount:res2.data.metadata.soldCount,
+                price:res2.data.metadata.currentPrice
+              });
+          }
         }
+        console.log(this.alllist)
+        this.totalpage=Math.ceil(this.alllist.length / this.perPage);
         if(this.sort=="DESC"){
           this.sortdesc(this.sortkey);
         }
@@ -374,7 +371,6 @@ const url=Global.apiurl
       getlist(page){
         this.page=page;
         this.list=this.alllist.slice((page-1)*this.perPage,page*this.perPage);
-        //console.log(page)
       },
       imgError(index){
         this.list[index].coverimg="https://www.ericaworld.tw/writing-nft-list/img/1660744363no_images.jpg"
@@ -393,16 +389,12 @@ const url=Global.apiurl
           return ((x<y)?-1:(x>y)?1:0);
         });
       },
-      select_changeSelect() {
-        console.log('data')
-        //if(data[0].value !=''){
-        //  this.select_defaultSelectText=text;
-         // this.select_value=data[0].value;
-        //}
+      selectchang() {
+        console.log(this.search_text)
       }
     },
     mounted() {
-      //this.reset_form();
+      //
     },
     components: {
       //
@@ -433,8 +425,14 @@ const url=Global.apiurl
   .width015{
     width:15%;
   }
+  .widthmin922{
+    min-width: 922px;
+  }
   .margin_b_05{
     margin-bottom: 0.5rem;
+  }
+  .margin_r_01{
+    margin-right: 0.1rem;
   }
   .margin_r_05{
     margin-right: 0.5rem;
